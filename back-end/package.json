@@ -1,0 +1,26 @@
+{
+  "name": "back-end",
+  "version": "1.0.0",
+  "description": "This folder contains files that contain all back-end logic of the nearby shops application.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/achrafbou1/united-remote-web-challenge.git"
+  },
+  "keywords": [
+    "nearby",
+    "shops",
+    "application",
+    "mevn",
+    "web"
+  ],
+  "author": "Achraf Boutat",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/achrafbou1/united-remote-web-challenge/issues"
+  },
+  "homepage": "https://github.com/achrafbou1/united-remote-web-challenge#readme"
+}

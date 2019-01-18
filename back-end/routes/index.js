@@ -13,35 +13,56 @@ var router = express.Router();
 /* Auth Routes */
 router.post('/register', (req, res, next) => {
     let validator = new nodeInputValidator(req.body, {
-        email:'required|email',
+        username: 'required|email',
         password: 'required|min:8'
     });
 
     let newUser = new User({
-        username: req.body.email
+        username: req.body.username
     });
 
     validator.check().then(matched => {
         if (!matched) {
-            let emailError =  validator.errors.email ? validator.errors.email.message + '\n' : '';
+            console.log(validator.errors);
+            let emailError = validator.errors.username ? validator.errors.username.message + '\n' : '';
             let passwordError = validator.errors.password ? validator.errors.password.message : '';
-            return res.status(422).json({error: emailError.concat(passwordError)});
+            return res.status(422).json({
+                error: emailError.concat(passwordError)
+            });
         }
         User.register(newUser, req.body.password, (err, user) => {
             if (err) {
                 console.log(err);
-                return res.status(422).json({error: err.message});
+                return res.status(422).json({
+                    error: err.message
+                });
             }
-            return res.status(200);
-                             
+            passport.authenticate('local')(req, res, function () {
+                return res.send(200);
+            });
         });
     });
-    
+
 });
 
-// router.post("/login", passport.authenticate("local", {
-//     successRedirect: "http://localhost:8080/shops",
-//     failureRedirect: "http://localhost:8080/login"
-// }), (req, res) => {console.log(req.body)});
+router.get("/login", function (req, res) {
+    res.send('Please login again');
+});
+
+router.post('/login',
+    passport.authenticate('local', {
+        successRedirect: 'shops',
+        failureRedirect: 'login'
+    })
+);
+
+router.get("/logout", (req, res) => {
+    req.logout();
+    res.send('sucessfully logged out');
+});
+
+router.get("/shops", (req, res) => {
+    res.send('Successfully logged in');
+});
 
 module.exports = router;

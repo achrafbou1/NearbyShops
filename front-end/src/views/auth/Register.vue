@@ -5,7 +5,7 @@
         <h1 class="text-xs-center">Register</h1>
         <!-- Login Form -->
         <v-form ref="form">
-          <v-text-field v-model="email" label="E-mail" required></v-text-field>
+          <v-text-field v-model="username" label="E-mail" required></v-text-field>
           <v-text-field v-model.trim="$v.password.$model" :append-icon="show ? 'visibility_off' : 'visibility'" :type="show ? 'text' : 'password'" label="Password" @click:append="show = !show"></v-text-field>
           
           <v-text-field v-model="repeatPassword" :append-icon="show ? 'visibility_off' : 'visibility'" :type="show ? 'text' : 'password'" label="Confirm Password" @click:append="show = !show"></v-text-field>
@@ -21,13 +21,12 @@
 <script>
 import { required, sameAs, minLength } from 'vuelidate/lib/validators'
 import axios from 'axios'
-import qs from 'qs'
 
 export default {
   name: 'Register',
   data () {
     return {
-      email: null,
+      username: null,
       password: null,
       repeatPassword: null,
       show: false,
@@ -40,7 +39,7 @@ export default {
           if(this.$v.repeatPassword.sameAsPassword){
             if(this.$refs.form.validate()){
                 let data = {
-                  email: this.email,
+                  username: this.username,
                   password: this.password
                 }
 
@@ -63,7 +62,7 @@ export default {
     }
   },
   validations: {
-    email: {
+    username: {
       required
     },
     password: {

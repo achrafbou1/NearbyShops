@@ -5,7 +5,7 @@
         <h1 class="text-xs-center">Welcome to the Nearby Shops Application !</h1>
         <!-- Login Form -->
         <v-form ref="form">
-          <v-text-field v-model="email" label="E-mail" required></v-text-field>
+          <v-text-field v-model="username" label="E-mail" required></v-text-field>
           <v-text-field v-model="password" :append-icon="show ? 'visibility_off' : 'visibility'" :type="show ? 'text' : 'password'" label="Password" @click:append="show = !show"></v-text-field>
           <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
           <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
@@ -19,13 +19,12 @@
 <script>
 import { required, email, minLength } from 'vuelidate/lib/validators'
 import axios from 'axios'
-import qs from 'qs'
 
 export default {
   name: 'Login',
   data () {
     return {
-      email: null,
+      username: null,
       password: null,
       show: false,
     }
@@ -34,7 +33,7 @@ export default {
     login(){
       if(this.$refs.form.validate()){
           let data = {
-            email: this.email,
+            username: this.username,
             password: this.password
           }
           axios.post('/api/v1/login', data)
@@ -49,7 +48,7 @@ export default {
       }
   },
   validations: {
-    email: {
+    username: {
       required, 
       email
     },

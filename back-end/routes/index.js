@@ -63,6 +63,14 @@ router.get("/logout", (req, res) => {
 
 router.get("/shops", (req, res) => {
     res.send('Successfully logged in');
+}, (req, res) => {
+    let token = getToken(req.headers);
+    if (token) {
+        console.log('Authenticated' + req.headers);
+        res.json({user: 'Authenticated' + req.headers})
+    } else {
+        return res.status(403).send({success: false, msg: 'Unauthorized.'})
+    }
 });
 
 module.exports = router;

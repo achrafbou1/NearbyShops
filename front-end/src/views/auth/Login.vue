@@ -6,50 +6,58 @@
         <!-- Login Form -->
         <v-form ref="form">
           <v-text-field v-model="username" label="E-mail" required></v-text-field>
-          <v-text-field v-model="password" :append-icon="show ? 'visibility_off' : 'visibility'" :type="show ? 'text' : 'password'" label="Password" @click:append="show = !show"></v-text-field>
+          <v-text-field
+            v-model="password"
+            :append-icon="show ? 'visibility_off' : 'visibility'"
+            :type="show ? 'text' : 'password'"
+            label="Password"
+            @click:append="show = !show"
+          ></v-text-field>
+          <v-alert :value="true" v-if="feedback" :type="feedbackClass">{{this.feedback}}</v-alert>
           <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
           <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
         </v-form>
-        
       </v-flex>
     </v-layout>
   </div>
 </template>
 
 <script>
-import { required, email, minLength } from 'vuelidate/lib/validators'
-import axios from 'axios'
+import { required, email, minLength } from "vuelidate/lib/validators";
+import axios from "axios";
 
 export default {
-  name: 'Login',
-  data () {
+  name: "Login",
+  data() {
     return {
       username: null,
       password: null,
       show: false,
-    }
+      feedbackClass: "error",
+      feedback: null
+    };
   },
   methods: {
-    login(){
-      if(this.$refs.form.validate()){
-          let data = {
-            username: this.username,
-            password: this.password
-          }
-          axios.post('/api/v1/login', data)
-          .then((response) => {
-            console.log('Logged In ' + response.data.message)
-            //this.$router.push('Shops')
+    login() {
+      if (this.$refs.form.validate()) {
+        let data = {
+          username: this.username,
+          password: this.password
+        };
+        axios
+          .post("/api/v1/login", data)
+          .then(response => {
+            this.$router.push('Shops')
           })
-          .catch((error) => {
-            console.log('Cannot log in ' + error)
-          })
-        }
+          .catch(error => {
+            this.feedback = error.response.data.error;
+          });
       }
+    }
   },
   validations: {
     username: {
-      required, 
+      required,
       email
     },
     password: {
@@ -61,6 +69,5 @@ export default {
 </script>
 
 <style>
-
 </style>
 

@@ -1,26 +1,27 @@
-var express = require('express');
-var path = require('path');
-var logger = require('morgan');
-var mongoose = require('mongoose');
-var expressSession = require('express-session');
-var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
-var cors = require('cors');
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const mongoose = require('mongoose');
+const expressSession = require('express-session');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const cors = require('cors');
 
 // Models
-var User = require('./models/User');
+const User = require('./models/User');
 // Routes
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
+const shopsRouter = require('./routes/shops');
 
-var app = express();
+const app = express();
 
-//Module configurations
+// Module configurations
 mongoose.connect('mongodb://localhost/web_coding_challenge', {
-    useNewUrlParser: true
+  useNewUrlParser: true,
 });
 app.use(logger('dev'));
 app.use(express.urlencoded({
-    extended: true
+  extended: true,
 }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -28,9 +29,9 @@ app.use(cors());
 
 // Passport configuration
 app.use(expressSession({
-    secret: 'united-remote',
-    resave: false,
-    saveUninitialized: false
+  secret: 'united-remote',
+  resave: false,
+  saveUninitialized: false,
 }));
 
 app.use(passport.initialize());
@@ -41,6 +42,6 @@ passport.deserializeUser(User.deserializeUser());
 
 // Main routes
 app.use('/api/v1/', indexRouter);
-
+app.use('/api/v1/shops/', shopsRouter);
 
 module.exports = app;

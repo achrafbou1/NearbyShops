@@ -47,7 +47,7 @@ export default {
                 .then((response) => {
                     this.feedbackClass = 'success'
                     this.feedback = 'You have been successfully registered'
-                    //this.$router.push({name: 'Shops'})
+                    this.$router.push({name: 'Shops'})
                 })
                 .catch((error) => {
                   this.feedbackClass = 'error'

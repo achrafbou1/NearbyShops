@@ -1,9 +1,10 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Login from './views/auth/Login'
-import Register from './views/auth/Register'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Login from './views/auth/Login';
+import Register from './views/auth/Register';
+import Shops from './views/home/Shops';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -12,12 +13,17 @@ export default new Router({
     {
       path: '/',
       name: 'Login',
-      component: Login
+      component: Login,
     },
     {
       path: '/register',
       name: 'Register',
-      component: Register
-    }
-  ]
-})
+      component: Register,
+    },
+    {
+      path: '/shops',
+      name: 'Shops',
+      component: Shops,
+    },
+  ],
+});

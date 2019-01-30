@@ -20,7 +20,6 @@ export default {
       axios
         .get("/api/v1/shops")
         .then(response => {
-          this.$set(this, "user", response.data.user);
         })
         .catch(errors => {
           console.log(errors);

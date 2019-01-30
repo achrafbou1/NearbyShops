@@ -47,7 +47,7 @@ export default {
         axios
           .post("/api/v1/login", data)
           .then(response => {
-            this.$router.push('Shops')
+            this.$router.push({name: 'Shops'})
           })
           .catch(error => {
             this.feedback = error.response.data.error;

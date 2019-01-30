@@ -1,76 +1,62 @@
 // Module imports
-var passport = require("passport");
-var express = require('express');
-var nodeInputValidator = require('node-input-validator');
+const passport = require('passport');
+const express = require('express');
+const nodeInputValidator = require('node-input-validator');
 
 // Models
-var User = require('../models/User');
+const User = require('../models/User');
 
-//Initialization of modules
-var router = express.Router();
+// Initialization of modules
+const router = express.Router();
 
 
 /* Auth Routes */
-router.post('/register', (req, res, next) => {
-    let validator = new nodeInputValidator(req.body, {
-        username: 'required|email',
-        password: 'required|min:8'
-    });
+router.post('/register', (req, res) => {
+  const validator = new nodeInputValidator(req.body, {
+    username: 'required|email',
+    password: 'required|min:8',
+  });
 
-    let newUser = new User({
-        username: req.body.username
-    });
+  const newUser = new User({
+    username: req.body.username,
+  });
 
-    validator.check().then(matched => {
-        if (!matched) {
-            console.log(validator.errors);
-            let emailError = validator.errors.username ? validator.errors.username.message + '\n' : '';
-            let passwordError = validator.errors.password ? validator.errors.password.message : '';
-            return res.status(422).json({
-                error: emailError.concat(passwordError)
-            });
-        }
-        User.register(newUser, req.body.password, (err, user) => {
-            if (err) {
-                console.log(err);
-                return res.status(422).json({
-                    error: err.message
-                });
-            }
-            passport.authenticate('local')(req, res, function () {
-                return res.send(200);
-            });
-        });
-    });
-
-});
-
-router.get("/login", function (req, res) {
-    res.send('Please login again');
-});
-
-router.post('/login',
-    passport.authenticate('local', {
-        successRedirect: 'shops',
-        failureRedirect: 'login'
-    })
-);
-
-router.get("/logout", (req, res) => {
-    req.logout();
-    res.send('sucessfully logged out');
-});
-
-router.get("/shops", (req, res) => {
-    res.send('Successfully logged in');
-}, (req, res) => {
-    let token = getToken(req.headers);
-    if (token) {
-        console.log('Authenticated' + req.headers);
-        res.json({user: 'Authenticated' + req.headers})
-    } else {
-        return res.status(403).send({success: false, msg: 'Unauthorized.'})
+  validator.check().then((matched) => {
+    if (!matched) {
+      console.log(validator.errors);
+      const emailError = validator.errors.username ? `${validator.errors.username.message}\n` : '';
+      const passwordError = validator.errors.password ? validator.errors.password.message : '';
+      return res.status(422).json({
+        error: emailError.concat(passwordError),
+      });
     }
+    User.register(newUser, req.body.password, (err, user) => {
+      if (err) {
+        console.log(err);
+        return res.status(422).json({
+          error: err.message,
+        });
+      }
+      passport.authenticate('local')(req, res, () => res.send(200));
+    });
+  });
+});
+
+
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) { return res.status(401).json({ error: 'Your email or password is incorrect, please try again' }); }
+    req.logIn(user, (err) => {
+      if (err) { return res.status(401).json({ error: 'Your email or password is incorrect, please try again' }); }
+      return res.json({ user: user.username });
+    });
+  })(req, res, next);
+});
+
+router.get('/logout', (req, res) => {
+  req.logout();
+  res.send('Sucessfully logged out');
 });
 
 module.exports = router;

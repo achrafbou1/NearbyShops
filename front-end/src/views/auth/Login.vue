@@ -13,7 +13,7 @@
             label="Password"
             @click:append="show = !show"
           ></v-text-field>
-          <v-alert :value="true" v-if="feedback" :type="feedbackClass">{{this.feedback}}</v-alert>
+          <flash-message></flash-message>
           <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
           <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
         </v-form>
@@ -32,26 +32,37 @@ export default {
     return {
       username: null,
       password: null,
-      show: false,
-      feedbackClass: "error",
-      feedback: null
+      show: false
     };
   },
   methods: {
     login() {
-      if (this.$refs.form.validate()) {
-        let data = {
-          username: this.username,
-          password: this.password
-        };
-        axios
-          .post("/api/v1/login", data)
-          .then(response => {
-            this.$router.push({name: 'Shops'})
-          })
-          .catch(error => {
-            this.feedback = error.response.data.error;
-          });
+      this.flash().destroyAll();
+      if (this.$v.username.required && this.$v.password.required) {
+        if (this.$v.username.email) {
+          if (this.$v.password.minLength) {
+            if (this.$refs.form.validate()) {
+              let data = {
+                username: this.username,
+                password: this.password
+              };
+              axios
+                .post("/api/v1/login", data)
+                .then(response => {
+                  this.$router.push({ name: "Shops" });
+                })
+                .catch(error => {
+                  this.flashError(error.response.data.error.message);
+                });
+            }
+            } else {
+            this.flashError("Your password should be at least 8 characters long.");
+          }
+        } else {
+          this.flashError("Please make sure you entered a valid email.");
+        }
+      } else {
+        this.flashError("The username or password fields cannot be empty.");
       }
     }
   },
@@ -69,5 +80,8 @@ export default {
 </script>
 
 <style>
+.flash__message-content{
+  color: #f5f5f5;
+}
 </style>
 

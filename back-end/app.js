@@ -16,7 +16,7 @@ const shopsRouter = require('./routes/shops');
 const app = express();
 
 // Module configurations
-mongoose.connect('mongodb://localhost/web_coding_challenge', {
+mongoose.connect('mongodb://localhost/united-remote-web-challenge', {
   useNewUrlParser: true,
 });
 app.use(logger('dev'));

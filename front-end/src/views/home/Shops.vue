@@ -6,6 +6,8 @@
 </template>  
 <script>
 import axios from "axios";
+import router from '@/router'
+
 export default {
   name: "Shops",
   data() {
@@ -20,10 +22,10 @@ export default {
       axios
         .get("/api/v1/shops")
         .then(response => {
+
         })
-        .catch(errors => {
-          console.log(errors);
-          //this.$router.push("/login")
+        .catch(error => {
+           router.push({ name: 'Login'})
         });
     }
   },

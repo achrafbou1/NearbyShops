@@ -1,24 +1,26 @@
 <template>
   <div class="login">
-    <v-layout row wrap justify-center class="mt-3">
-      <v-flex xs6>
-        <h1 class="text-xs-center">Welcome to the Nearby Shops Application !</h1>
-        <!-- Login Form -->
-        <v-form ref="form">
-          <v-text-field v-model="username" label="E-mail" required></v-text-field>
-          <v-text-field
-            v-model="password"
-            :append-icon="show ? 'visibility_off' : 'visibility'"
-            :type="show ? 'text' : 'password'"
-            label="Password"
-            @click:append="show = !show"
-          ></v-text-field>
-          <flash-message></flash-message>
-          <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
-          <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
-        </v-form>
-      </v-flex>
-    </v-layout>
+    <v-container>
+      <v-layout row wrap justify-center class="mt-3">
+        <v-flex xs6>
+          <h1 class="text-xs-center">Welcome to the Nearby Shops Application !</h1>
+          <!-- Login Form -->
+          <v-form ref="form">
+            <v-text-field v-model="username" label="E-mail" required></v-text-field>
+            <v-text-field
+              v-model="password"
+              :append-icon="show ? 'visibility_off' : 'visibility'"
+              :type="show ? 'text' : 'password'"
+              label="Password"
+              @click:append="show = !show"
+            ></v-text-field>
+            <flash-message></flash-message>
+            <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
+            <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
+          </v-form>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </div>
 </template>
 
@@ -55,8 +57,10 @@ export default {
                   this.flashError(error.response.data.error.message);
                 });
             }
-            } else {
-            this.flashError("Your password should be at least 8 characters long.");
+          } else {
+            this.flashError(
+              "Your password should be at least 8 characters long."
+            );
           }
         } else {
           this.flashError("Please make sure you entered a valid email.");
@@ -80,7 +84,7 @@ export default {
 </script>
 
 <style>
-.flash__message-content{
+.flash__message-content {
   color: #f5f5f5;
 }
 </style>

@@ -8,7 +8,7 @@ const Shop = require('../models/Shop');
 
 /* GET shops listing. */
 router.get('/', middleware.isLoggedIn, (req, res) => {
-  Shop.find((err, res) => {
+  Shop.find((err, shops) => {
     if (err) {
       res.json({
         error: {
@@ -16,10 +16,11 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
         }
       });
     } else {
-      console.log(res);
+      res.json({
+        shops
+      })
     }
   });
-  res.send('Successfully logged in');
 });
 
 module.exports = router;

@@ -41,8 +41,6 @@ export default {
       password: null,
       repeatPassword: null,
       show: false,
-      feedbackClass: "error",
-      feedback: false
     };
   },
   methods: {

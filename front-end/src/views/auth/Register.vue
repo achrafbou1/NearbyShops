@@ -40,7 +40,7 @@ export default {
       username: null,
       password: null,
       repeatPassword: null,
-      show: false,
+      show: false
     };
   },
   methods: {
@@ -58,18 +58,19 @@ export default {
               axios
                 .post("/api/v1/register", data)
                 .then(response => {
-                  this.feedbackClass = "success";
-                  this.feedback = "You have been successfully registered";
-                  this.$router.push({ name: "Shops" });
+                  alert("You have been successfully registered, please click 'OK' to login")
+                  this.$router.push({ name: "Login" });
                 })
                 .catch(error => {
                   this.flashError(error.response.data.error.message);
                 });
             } else {
-              this.flashError( "Please make sure both passwords are identical.");
+              this.flashError("Please make sure both passwords are identical.");
             }
           } else {
-            this.flashError("Your password should be at least 8 characters long.");
+            this.flashError(
+              "Your password should be at least 8 characters long."
+            );
           }
         } else {
           this.flashError("Please make sure you entered a valid email.");
@@ -96,7 +97,7 @@ export default {
 </script>
 
 <style>
-.flash__message-content{
+.flash__message-content {
   color: #f5f5f5;
 }
 </style>

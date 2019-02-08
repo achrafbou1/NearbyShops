@@ -30,8 +30,9 @@ export default {
   },
   methods: {
     logout: () => {
-      axios.get("/api/v1/logout").then(() => {
-        router.push({ name: "Login"});
+      localStorage.removeItem("jwtToken");
+      this.$router.push({
+        name: "Login"
       });
     },
     created: () => {}

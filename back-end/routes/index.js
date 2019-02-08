@@ -1,7 +1,14 @@
+// Config imports
+
 // Module imports
+
 const passport = require('passport');
+require('../config/passport')(passport);
 const express = require('express');
 const nodeInputValidator = require('node-input-validator');
+const jwt = require('jsonwebtoken');
+const settings = require('../config/settings');
+
 
 // Models
 const User = require('../models/User');
@@ -12,37 +19,61 @@ const router = express.Router();
 
 /* Auth Routes */
 router.post('/register', (req, res) => {
+  checkInput(req, res);
   const newUser = new User({
     username: req.body.username,
+    password: req.body.password,
   });
-  checkInput(req, res);
-  User.register(newUser, req.body.password, (err, user) => {
+  newUser.save((err) => {
     if (err) {
-      console.log(err);
-      return res.status(422).json({
-        error: err,
+      return res.json({
+        success: false,
+        message: 'Username already exists.',
       });
     }
-    passport.authenticate('local')(req, res, () => res.status(200).json({ user }));
+    res.json({
+      success: true,
+      message: 'Successful created new user.',
+    });
   });
 });
 
 
-router.post('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
   checkInput(req, res);
-  passport.authenticate('local', (err, user, info) => {
-    if (err) { return next(err); }
-    if (!user) { return res.status(401).json({ error: info }); }
-    req.logIn(user, (err) => {
-      if (err) { return res.status(401).json({ error: info }); }
-      return res.json({ user: user.username });
-    });
-  })(req, res, next);
-});
-
-router.get('/logout', (req, res) => {
-  req.logout();
-  res.status(200).json({message: 'Successfully logged out'});
+  User.findOne({
+    username: req.body.username,
+  }, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      res.status(401).send({
+        success: false,
+        error: {
+          message: 'Authentication failed. User not found.',
+        },
+      });
+    } else {
+      // check if password matches
+      user.comparePassword(req.body.password, (err, isMatch) => {
+        if (isMatch && !err) {
+          // if user is found and password is right create a token
+          const token = jwt.sign(user.toJSON(), settings.secret);
+          // return the information including token as JSON
+          res.json({
+            success: true,
+            token: `JWT ${token}`,
+          });
+        } else {
+          res.status(401).send({
+            success: false,
+            error: {
+              message: 'Authentication failed. Wrong password.'
+            },
+          });
+        }
+      });
+    }
+  });
 });
 
 // Functions
@@ -59,7 +90,10 @@ checkInput = (req, res) => {
       const emailError = validator.errors.username ? `${validator.errors.username.message}\n` : '';
       const passwordError = validator.errors.password ? validator.errors.password.message : '';
       return res.status(422).json({
-        error: { message: emailError.concat(passwordError) },
+        error: {
+          success: false,
+          message: emailError.concat(passwordError),
+        },
       });
     }
   });

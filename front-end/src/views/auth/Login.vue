@@ -51,6 +51,7 @@ export default {
               axios
                 .post("/api/v1/login", data)
                 .then(response => {
+                  localStorage.setItem('jwtToken', response.data.token)
                   this.$router.push({ name: "Shops" });
                 })
                 .catch(error => {

@@ -45,18 +45,23 @@ export default {
     };
   },
   created() {
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
     axios
       .get("/api/v1/shops")
       .then(response => {
         this.shops = response.data.shops;
-        for(let i=0;i<Object.keys(this.shops).length;i++){
+        for (let i = 0; i < Object.keys(this.shops).length; i++) {
           this.$set(this.shops[i], "show", false);
         }
-        console.log(response.data);
       })
       .catch(error => {
-        console.log(error);
-        //router.push({ name: 'Login'})
+        if (error.response.status == 401) {
+          this.$router.push({
+            name: "Login"
+          });
+        }
       });
   }
 };

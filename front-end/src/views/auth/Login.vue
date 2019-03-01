@@ -27,6 +27,8 @@
 <script>
 import { required, email, minLength } from "vuelidate/lib/validators";
 import axios from "axios";
+import router from "@/router";
+import { EventBus } from "@/Events"
 
 export default {
   name: "Login",
@@ -52,9 +54,11 @@ export default {
                 .post("/api/v1/login", data)
                 .then(response => {
                   localStorage.setItem('jwtToken', response.data.token)
-                  this.$router.push({ name: "Shops" });
+                  EventBus.$emit('logged', 'User logged')
+                  router.push({ name: "Shops" });
                 })
                 .catch(error => {
+                  console.log(error)
                   this.flashError(error.response.data.error.message);
                 });
             }

@@ -9,21 +9,26 @@ const router = express.Router();
 const Shop = require('../models/Shop');
 
 /* GET shops listing. */
-router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/', passport.authenticate('jwt', {
+  session: false
+}), (req, res) => {
   const token = getToken(req.headers);
   if (token) {
     Shop.find((err, shops) => {
       if (err) console.log(err);
-      res.json(shops);
+      res.json({shops});
     });
   } else {
-    return res.status(403).send({ success: false, message: 'Unauthorized.' });
+    return res.status(403).send({
+      success: false,
+      message: 'Unauthorized.'
+    });
   }
 });
 
 // Functions
 
-getToken = function (headers) {
+let getToken = function (headers) {
   if (headers && headers.authorization) {
     const parted = headers.authorization.split(' ');
     if (parted.length === 2) {

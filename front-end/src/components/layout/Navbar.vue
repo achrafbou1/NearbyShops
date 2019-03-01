@@ -8,9 +8,11 @@
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn flat class="text-uppercase" :to="{ name: 'Login' }" active-class>Login</v-btn>
-        <v-btn flat class="text-uppercase" :to="{ name: 'Register' }" active-class>Register</v-btn>
-        <v-btn flat class="text-uppercase" @click="logout">Logout</v-btn>
+        <v-btn flat class="text-uppercase" v-if="!isLogged" :to="{ name: 'Login' }" active-class>Login</v-btn>
+        <v-btn flat class="text-uppercase" v-if="!isLogged" :to="{ name: 'Register' }" active-class>Register</v-btn>
+        <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">Nearby Shops</v-btn>
+        <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">My Preferred Shops</v-btn>
+        <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">Logout</v-btn>
       </v-toolbar-items>
     </v-toolbar>
   </nav>
@@ -18,24 +20,37 @@
 
 <script>
 import axios from "axios";
-import router from "../../router";
+import router from "@/router";
+import { EventBus } from "@/Events"
 
 export default {
   name: "Navbar",
   data() {
     return {
       tile: false,
-      avatarSize: 40
+      avatarSize: 40,
+      isLogged: this.checkIfIsLogged()
     };
   },
+  created () {
+    EventBus.$on('logged', () => {
+      this.isLogged = this.checkIfIsLogged()
+    })
+  },
   methods: {
-    logout: () => {
+    logout() {
       localStorage.removeItem("jwtToken");
-      this.$router.push({
-        name: "Login"
-      });
+      this.isLogged = this.checkIfIsLogged()
+      router.push('/')
     },
-    created: () => {}
+    checkIfIsLogged() {
+      let token = localStorage.getItem('jwtToken')
+      if (token) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 };
 </script>

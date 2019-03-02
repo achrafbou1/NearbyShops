@@ -1,8 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Landing from '@/views/Landing';
 import Login from '@/views/auth/Login';
 import Register from '@/views/auth/Register';
 import Shops from '@/views/home/Shops';
+import PreferredShops from '@/views/home/PreferredShops';
 
 Vue.use(Router);
 
@@ -12,6 +14,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Landing',
+      component: Landing,
+    },
+    {
+      path: '/login',
       name: 'Login',
       component: Login,
     },
@@ -25,5 +32,10 @@ export default new Router({
       name: 'Shops',
       component: Shops,
     },
+    {
+      path: '/preferred-shops',
+      name: 'PreferredShops',
+      component: PreferredShops,
+    }
   ],
 });

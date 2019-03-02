@@ -13,6 +13,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  likedShops: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Shop'
+  }]
 });
 
 UserSchema.pre('save', function (next) {

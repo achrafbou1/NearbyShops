@@ -3,7 +3,7 @@
     <v-container>
       <v-layout row wrap justify-center class="mt-3">
         <v-flex xs6>
-          <h1 class="text-xs-center">Welcome to the Nearby Shops Application !</h1>
+          <h1 class="text-xs-center">Welcome to the Nearby Shops Application</h1>
           <!-- Login Form -->
           <v-form ref="form">
             <v-text-field v-model="username" label="E-mail" required></v-text-field>
@@ -28,7 +28,7 @@
 import { required, email, minLength } from "vuelidate/lib/validators";
 import axios from "axios";
 import router from "@/router";
-import { EventBus } from "@/Events"
+import { EventBus } from "@/Events";
 
 export default {
   name: "Login",
@@ -38,6 +38,11 @@ export default {
       password: null,
       show: false
     };
+  },
+  beforeCreate() {
+    if (localStorage.getItem("jwtToken")) {
+      router.push({ name: "Shops" });
+    }
   },
   methods: {
     login() {
@@ -53,12 +58,12 @@ export default {
               axios
                 .post("/api/v1/login", data)
                 .then(response => {
-                  localStorage.setItem('jwtToken', response.data.token)
-                  EventBus.$emit('logged', 'User logged')
+                  localStorage.setItem("jwtToken", response.data.token);
+                  EventBus.$emit("logged", "User logged");
                   router.push({ name: "Shops" });
                 })
                 .catch(error => {
-                  console.log(error)
+                  console.log(error);
                   this.flashError(error.response.data.error.message);
                 });
             }

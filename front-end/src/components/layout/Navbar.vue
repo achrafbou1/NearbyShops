@@ -10,8 +10,8 @@
       <v-toolbar-items>
         <v-btn flat class="text-uppercase" v-if="!isLogged" :to="{ name: 'Login' }" active-class>Login</v-btn>
         <v-btn flat class="text-uppercase" v-if="!isLogged" :to="{ name: 'Register' }" active-class>Register</v-btn>
-        <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">Nearby Shops</v-btn>
-        <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">My Preferred Shops</v-btn>
+        <v-btn flat class="text-uppercase" v-if="isLogged" :to="{ name: 'Shops' }">Nearby Shops</v-btn>
+        <v-btn flat class="text-uppercase" v-if="isLogged":to="{ name: 'PreferredShops' }">My Preferred Shops</v-btn>
         <v-btn flat class="text-uppercase" v-if="isLogged" @click="logout">Logout</v-btn>
       </v-toolbar-items>
     </v-toolbar>

@@ -32,6 +32,7 @@
 <script>
 import { email, required, sameAs, minLength } from "vuelidate/lib/validators";
 import axios from "axios";
+import router from "@/router";
 
 export default {
   name: "Register",
@@ -59,7 +60,7 @@ export default {
                 .post("/api/v1/register", data)
                 .then(response => {
                   alert("You have been successfully registered, please click 'OK' to login")
-                  this.$router.push({ name: "Login" });
+                  router.push({ name: "Login" });
                 })
                 .catch(error => {
                   this.flashError(error.response.data.error.message);

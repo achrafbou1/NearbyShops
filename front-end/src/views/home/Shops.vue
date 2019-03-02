@@ -30,7 +30,6 @@
 <script>
 import axios from "axios";
 import router from "@/router";
-import { EventBus } from "@/Events";
 
 export default {
   name: "Shops",
@@ -54,9 +53,6 @@ export default {
     );
     this.getShops();
     this.getLikedShops();  
-  },
-  updated() {
-    EventBus.$emit("shops", this.shops);
   },
   methods: {
     // Get all shops in the database and push them in a local array for further processing

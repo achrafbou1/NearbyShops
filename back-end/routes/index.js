@@ -78,7 +78,7 @@ router.post('/login', (req, res) => {
 
 // Functions
 
-checkInput = (req, res) => {
+let checkInput = (req, res) => {
   const validator = new nodeInputValidator(req.body, {
     username: 'required|email',
     password: 'required|min:8',

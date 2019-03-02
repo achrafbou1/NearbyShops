@@ -4,7 +4,7 @@
       <!-- Top-left logo -->
       <v-toolbar-title class="text-uppercase grey--text">
         <span class="font-weight-light">Nearby</span>
-        <span>Shops</span>
+        <span :to="{ name: 'Landing' }">Shops</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>

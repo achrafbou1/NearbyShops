@@ -15,6 +15,7 @@ const app = express();
 mongoose.connect('mongodb://localhost/united-remote-web-challenge', {
   useNewUrlParser: true,
 });
+mongoose.set('useFindAndModify', false);
 app.use(logger('dev'));
 app.use(express.urlencoded({
   extended: true,

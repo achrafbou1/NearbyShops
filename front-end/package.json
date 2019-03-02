@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "vue": "^2.5.21",
+    "vue-cookies": "^1.5.12",
     "vue-flash-message": "^0.7.2",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",

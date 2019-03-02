@@ -3,7 +3,7 @@
     <v-container grid-list-md>
       <flash-message></flash-message>
       <v-layout row wrap>
-        <v-flex xs4 v-if="!isLiked(shop._id)" v-for="shop in shops" :key="shop._id">
+        <v-flex xs4 v-if="!isLiked(shop._id) || !isDisliked(shop._id)" v-for="shop in shops" :key="shop._id">
           <v-card>
             <v-img :src="shop.picture" height="200px"></v-img>
             <v-card-title primary-title>
@@ -18,7 +18,7 @@
 
             <v-card-actions>
               <v-btn flat color="green" @click="like(shop._id)">Like</v-btn>
-              <v-btn flat color="red" @click="dislike">Dislike</v-btn>
+              <v-btn flat color="red" @click="dislike(shop._id)">Dislike</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -37,7 +37,8 @@ export default {
     return {
       shops: {},
       isSorted: false,
-      likedShops: []
+      likedShops: [],
+      dislikedShops: []
     };
   },
   created() {
@@ -52,7 +53,7 @@ export default {
       "jwtToken"
     );
     this.getShops();
-    this.getLikedShops();  
+    this.getLikedShops();
   },
   methods: {
     // Get all shops in the database and push them in a local array for further processing
@@ -86,6 +87,12 @@ export default {
       }
       return true;
     },
+    isDisliked(shop_id){
+      if(this.dislikedShops.indexOf(shop_id) === -1){
+        return false;
+      }
+      return true;
+    },
     // Like a shop
     like(shop_id) {
       this.flash().destroyAll();
@@ -109,16 +116,9 @@ export default {
     // Dislike a shop
     dislike(shop_id) {
       this.flash().destroyAll();
-      axios
-        .post("/api/v1/shops/dislike", { shop_id })
-        .then(response => {
-          this.flashError("Successfully disliked!");
-        })
-        .catch(error => {
-          this.flashError(
-            "An error occurred while disliking your shop, please try again."
-          );
-        });
+      this.$cookies.set("dislikedShop-"+this.getRandomInt(0,100000), shop_id, 60 * 60 * 2);
+      this.dislikedShops.push(shop_id);
+      this.flashSuccess("You won't see this shop for the next 2 hours!");
     },
     // Get User location and then sort shops by distance
     getLocationAndSort() {
@@ -160,6 +160,11 @@ export default {
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       var d = R * c; // Distance in km
       return d;
+    },
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
   }
 };

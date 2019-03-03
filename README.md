@@ -18,19 +18,19 @@ A MEVN Stack application that lists nearby shops based on a user's location.
 
 # Screenshots
 * Landing page:
-![alt text](http://prntscr.com/msmvw5)
+![alt text](https://image.prntscr.com/image/wqBcL2VLSgWrkoyg7s8-nA.png)
 
 * Login
-![alt text](http://prntscr.com/msmw0y)
+![alt text](https://image.prntscr.com/image/zqwJ2IXmSLGaR1Xu1Gho1g.png)
 
 * Register
-![alt text](http://prntscr.com/msmw7y)
+![alt text](https://image.prntscr.com/image/Vu08rfV7TgKo84SN_Viybw.png)
 
 * Nearby Shops
-![alt text](http://prntscr.com/msmwge)
+![alt text](https://image.prntscr.com/image/Tpl_bofKRqyp4jFuDZlyIA.png)
 
 * My Preferred Shops
-![alt text](http://prntscr.com/msmwng)
+![alt text](https://image.prntscr.com/image/hEyTnL8NRUqCIayMvUVsvg.png)
 
 # Getting Started
 ## Technologies used

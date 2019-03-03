@@ -3,21 +3,21 @@
     <v-container grid-list-md>
       <flash-message></flash-message>
       <v-layout row wrap>
-        <v-flex xs4 v-if="isLiked(shop._id)" v-for="shop in shops" :key="shop._id">
+        <v-flex v-if="isLiked(shop._id) && !isDisliked(shop._id)" xs4 v-for="shop in shops" :key="shop._id">
           <v-card>
             <v-img :src="shop.picture" height="200px"></v-img>
             <v-card-title primary-title>
               <div>
                 <div class="headline">{{shop.name}}</div>
                 <!-- Round to 2 decimal places -->
-                <div v-if="isSorted" class="grey--text">{{Math.round(shop.distance * 100) / 100}} Km</div>
+                <div class="grey--text">{{Math.round(shop.distance * 100) / 100}} Km</div>
                 <span class="grey--text">{{shop.city}}</span>
                 <span class="grey--text">{{shop.email}}</span>
               </div>
             </v-card-title>
 
             <v-card-actions>
-              <v-btn flat color="red">Dislike</v-btn>
+              <v-btn flat color="red" @click="Remove(shop._id)">Remove</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -37,24 +37,45 @@ export default {
   data() {
     return {
       shops: {},
-      likedShops: []
+      likedShops: [],
+      dislikedShops: []
     };
   },
   created() {
     this.getShops();
     this.getLikedShops();
+    this.getDislikedShops();
   },
   methods: {
     // Get all shops in the database and push them in a local array for further processing
     getShops() {
-      EventBus.$on('shops', (shops) => {
-         this.shops = shops;
-        console.log(this.shops)
-      });
+      axios
+        .get("/api/v1/shops")
+        .then(response => {
+          // Get the list of shops from backend server and fill the local array of objects that will be specific to hte user, then sort them by distance
+          this.shops = response.data.shops;
+          this.getLocationAndSort();
+        })
+        .catch(error => {
+          router.push({ name: "Login" });
+        });
     },
     getLikedShops() {
-      EventBus.$on('likedShops', (likedShops) => {
-        this.likedShops = likedShops;
+      axios
+        .get("/api/v1/shops/likedshops")
+        .then(response => {
+          // Get the list of shops from backend server and fill the local array of objects that will be specific to hte user, then sort them by distance
+          this.likedShops = response.data.likedShops;
+          EventBus.$emit("likedShops", this.likedShops);
+        })
+        .catch(error => {
+          router.push({ name: "Login" });
+        });
+    },
+    getDislikedShops() {
+      this.$cookies.keys().forEach(dislikedShop => {
+        let dislikedShop_id = this.$cookies.get(dislikedShop);
+        this.dislikedShops.push(dislikedShop_id);
       });
     },
     // Checks if a shop is liked
@@ -63,6 +84,32 @@ export default {
         return false;
       }
       return true;
+    },
+    isDisliked(shop_id) {
+      if (this.dislikedShops.indexOf(shop_id) === -1) {
+        return false;
+      }
+      return true;
+    },
+    // Like a shop
+    Like(shop_id) {
+      this.flash().destroyAll();
+      let shop = { shop_id };
+      axios
+        .post("/api/v1/shops/like", shop)
+        .then(response => {
+          this.likedShops = this.shops.filter(shop => {
+            let response_likedShops = response.data.likedShops;
+            return response_likedShops.indexOf(shop._id) !== -1;
+          });
+          this.flashSuccess("Successfully liked!");
+          this.getLikedShops();
+        })
+        .catch(error => {
+          this.flashError(
+            "An error occurred while liking your shop, please try again."
+          );
+        });
     },
     // Get User location and then sort shops by distance
     getLocationAndSort() {
@@ -88,7 +135,18 @@ export default {
       this.shops.sort((shop1, shop2) =>
         shop1.distance > shop2.distance ? 1 : -1
       );
-      this.isSorted = true;
+      EventBus.$emit("shops", this.shops);
+    },
+    //Removes a shop from my preferred shop
+    Remove(shop_id) {
+      let shop = {shop_id}
+      axios.post("/api/v1/shops/remove", shop)
+      .then(response => {
+        this.likedShops = response.data.likedShops;
+      })
+      .catch(error => {
+        router.push({ name: "Login" });
+      })
     },
     //Function that calculates the distance between two points
     getDistance(userLongitude, userLatitude, shopLongitude, shopLatitude) {
@@ -104,6 +162,11 @@ export default {
       var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       var d = R * c; // Distance in km
       return d;
+    },
+    getRandomInt(min, max) {
+      min = Math.ceil(min);
+      max = Math.floor(max);
+      return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
     }
   }
 };

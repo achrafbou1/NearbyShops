@@ -81,6 +81,34 @@ router.post('/like', passport.authenticate('jwt', {
   });
 });
 
+// Like a shop
+router.post('/remove', passport.authenticate('jwt', {
+  session: false,
+}), (req, res) => {
+  console.log(req.body.shop_id);
+  User.findOneAndUpdate({
+    _id: req.user._id,
+  }, {
+    $pull: {
+      likedShops: req.body.shop_id
+    },
+  }, {
+    new: true,
+  }, (err, doc) => {
+    if (err) {
+      res.status(422).send({
+        success: false,
+        message: err,
+      });
+    } else {
+      res.status(200).send({
+        success: true,
+        user: req.user.username,
+        likedShops: doc.likedShops,
+      });
+    }
+  });
+});
 // Functions
 
 let getToken = function (headers) {

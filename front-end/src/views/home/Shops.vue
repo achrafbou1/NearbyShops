@@ -17,8 +17,8 @@
             </v-card-title>
 
             <v-card-actions>
-              <v-btn flat color="green" @click="like(shop._id)">Like</v-btn>
-              <v-btn flat color="red" @click="dislike(shop._id)">Dislike</v-btn>
+              <v-btn flat color="green" @click="Like(shop._id)">Like</v-btn>
+              <v-btn flat color="red" @click="Dislike(shop._id)">Dislike</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -77,7 +77,6 @@ export default {
         let dislikedShop_id = this.$cookies.get(dislikedShop);
         this.dislikedShops.push(dislikedShop_id);
       });
-      console.log(this.dislikedShops);
     },
     // Checks if a shop is liked
     isLiked(shop_id) {
@@ -93,7 +92,7 @@ export default {
       return true;
     },
     // Like a shop
-    like(shop_id) {
+    Like(shop_id) {
       this.flash().destroyAll();
       let shop = { shop_id };
       axios
@@ -113,7 +112,7 @@ export default {
         });
     },
     // Dislike a shop
-    dislike(shop_id) {
+    Dislike(shop_id) {
       this.flash().destroyAll();
       this.$cookies.set(
         "dislikedShop-" + this.getRandomInt(0, 100000),

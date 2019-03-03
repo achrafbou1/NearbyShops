@@ -12,7 +12,7 @@ require('vue-flash-message/dist/vue-flash-message.min.css');
 Vue.config.productionTip = false;
 Vue.use(Vuelidate);
 Vue.use(VueFlashMessage);
-Vue.use(VueCookies)
+Vue.use(VueCookies);
 
 new Vue({
   router,

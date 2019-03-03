@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const passportLocalMongoose = require('passport-local-mongoose');
-var GeoJSON = require('mongoose-geojson-schema');
+require('mongoose-geojson-schema');
 
 const Schema = mongoose.Schema;
 

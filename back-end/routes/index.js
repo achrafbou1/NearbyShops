@@ -86,7 +86,6 @@ let checkInput = (req, res) => {
 
   validator.check().then((matched) => {
     if (!matched) {
-      console.log(validator.errors);
       const emailError = validator.errors.username ? `${validator.errors.username.message}\n` : '';
       const passwordError = validator.errors.password ? validator.errors.password.message : '';
       return res.status(422).json({

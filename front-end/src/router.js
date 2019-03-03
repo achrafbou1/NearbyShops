@@ -36,6 +36,6 @@ export default new Router({
       path: '/preferred-shops',
       name: 'PreferredShops',
       component: PreferredShops,
-    }
+    },
   ],
 });

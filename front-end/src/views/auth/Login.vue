@@ -1,22 +1,46 @@
 <template>
   <div class="login">
     <v-container>
-      <v-layout row wrap justify-center class="mt-3">
+      <v-layout
+        row
+        wrap
+        justify-center
+        class="mt-3"
+      >
         <v-flex xs6>
-          <h1 class="text-xs-center">Welcome to the Nearby Shops Application</h1>
+          <h1 class="text-xs-center">
+            Welcome to the Nearby Shops Application
+          </h1>
           <!-- Login Form -->
           <v-form ref="form">
-            <v-text-field v-model="username" label="E-mail" required></v-text-field>
+            <v-text-field
+              v-model="username"
+              label="E-mail"
+              required
+            />
             <v-text-field
               v-model="password"
               :append-icon="show ? 'visibility_off' : 'visibility'"
               :type="show ? 'text' : 'password'"
               label="Password"
               @click:append="show = !show"
-            ></v-text-field>
-            <flash-message></flash-message>
-            <v-btn flat class="success mx-0 mt-3" @click="login">Login</v-btn>
-            <v-btn flat class="primary ml-1 mt-3" router :to="{name: 'Register'}">Register</v-btn>
+            />
+            <flash-message />
+            <v-btn
+              flat
+              class="success mx-0 mt-3"
+              @click="login"
+            >
+              Login
+            </v-btn>
+            <v-btn
+              flat
+              class="primary ml-1 mt-3"
+              router
+              :to="{name: 'Register'}"
+            >
+              Register
+            </v-btn>
           </v-form>
         </v-flex>
       </v-layout>

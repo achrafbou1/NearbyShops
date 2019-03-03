@@ -1,7 +1,9 @@
 <template>
-<div id="landing">
-    
-</div>
+  <div id="landing">
+    <v-img :src="`https://images.unsplash.com/photo-1486631481453-036d90ebd89b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=751&q=80`">
+      <h1 class="text-xs-center white--text">Welcome to the Nearby Shops Application!</h1>
+    </v-img>
+  </div>
 </template>
 
 <script>
@@ -12,11 +14,8 @@ export default {
 };
 </script>
  <style>
-    #landing {
-    background-image: url("https://images.unsplash.com/photo-1468582232004-7f2dc42c8e2d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&q=80");
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    }
+body {
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
 </style>

@@ -1,18 +1,29 @@
 <template>
   <div class="register">
-    <v-layout row wrap justify-center class="mt-3">
+    <v-layout
+      row
+      wrap
+      justify-center
+      class="mt-3"
+    >
       <v-flex xs6>
-        <h1 class="text-xs-center">Register</h1>
+        <h1 class="text-xs-center">
+          Register
+        </h1>
         <!-- Login Form -->
         <v-form ref="form">
-          <v-text-field v-model="username" label="E-mail" required></v-text-field>
+          <v-text-field
+            v-model="username"
+            label="E-mail"
+            required
+          />
           <v-text-field
             v-model.trim="password"
             :append-icon="show ? 'visibility_off' : 'visibility'"
             :type="show ? 'text' : 'password'"
             label="Password"
             @click:append="show = !show"
-          ></v-text-field>
+          />
 
           <v-text-field
             v-model="repeatPassword"
@@ -20,9 +31,15 @@
             :type="show ? 'text' : 'password'"
             label="Confirm Password"
             @click:append="show = !show"
-          ></v-text-field>
-          <flash-message></flash-message>
-          <v-btn flat class="success mx-0 mt-3" @click="register">Register</v-btn>
+          />
+          <flash-message />
+          <v-btn
+            flat
+            class="success mx-0 mt-3"
+            @click="register"
+          >
+            Register
+          </v-btn>
         </v-form>
       </v-flex>
     </v-layout>

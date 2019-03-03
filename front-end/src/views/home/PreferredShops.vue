@@ -1,24 +1,49 @@
 <template>
   <div class="shops">
     <v-container grid-list-md>
-      <flash-message></flash-message>
-      <v-layout row wrap>
-        <v-flex v-if="isLiked(shop._id) && !isDisliked(shop._id)" xs4 v-for="shop in shops" :key="shop._id">
+      <flash-message />
+      <v-layout
+        row
+        wrap
+      >
+        <v-flex
+          v-for="shop in shops"
+          v-if="isLiked(shop._id) && !isDisliked(shop._id)"
+          :key="shop._id"
+          xs4
+        >
           <v-card>
-            <v-img :src="shop.picture" height="200px"></v-img>
+            <v-img
+              :src="shop.picture"
+              height="200px"
+            />
             <v-card-title primary-title>
               <div>
-                <div class="headline">{{shop.name}}</div>
+                <div class="headline">
+                  {{ shop.name }}
+                </div>
                 <!-- Round to 2 decimal places -->
-                <div class="grey--text">{{Math.round(shop.distance * 100) / 100}} Km</div>
-                <span class="grey--text">{{shop.city}}</span>
-                <span class="grey--text">{{shop.email}}</span>
+                <div class="grey--text">
+                  {{ Math.round(shop.distance * 100) / 100 }} Km
+                </div>
+                <span class="grey--text">
+                  {{ shop.city }}
+                </span>
+                <span class="grey--text">
+                  {{ shop.email }}
+                </span>
               </div>
             </v-card-title>
 
             <v-card-actions>
-              <v-btn flat color="red" @click="Remove(shop._id)">Remove</v-btn>
-              <v-spacer></v-spacer>
+              <v-btn
+                flat
+                color="red"
+                @click="Remove(shop._id)"
+              >
+                Remove
+              </v-btn>
+              <v-spacer />
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -42,6 +67,10 @@ export default {
     };
   },
   created() {
+    //Set the Authorization header for authentication with the backend
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
     this.getShops();
     this.getLikedShops();
     this.getDislikedShops();

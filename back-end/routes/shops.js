@@ -16,7 +16,10 @@ router.get('/', passport.authenticate('jwt', {
   const token = getToken(req.headers);
   if (token) {
     Shop.find((err, shops) => {
-      if (err) console.log(err);
+      if (err) res.send({
+        success: false,
+        message: err,
+      });
       res.json({
         shops,
       });
@@ -38,8 +41,10 @@ router.get('/likedshops', passport.authenticate('jwt', {
     User.find({
       _id: req.user._id,
     },(err, user) => {
-      if (err) console.log(err);
-      console.log()
+      if (err) res.send({
+        success: false,
+        message: err,
+      });
       res.json({
         likedShops: user[0].likedShops,
       });
@@ -56,7 +61,6 @@ router.get('/likedshops', passport.authenticate('jwt', {
 router.post('/like', passport.authenticate('jwt', {
   session: false,
 }), (req, res) => {
-  console.log(req.body.shop_id);
   User.findOneAndUpdate({
     _id: req.user._id,
   }, {
@@ -85,7 +89,6 @@ router.post('/like', passport.authenticate('jwt', {
 router.post('/remove', passport.authenticate('jwt', {
   session: false,
 }), (req, res) => {
-  console.log(req.body.shop_id);
   User.findOneAndUpdate({
     _id: req.user._id,
   }, {

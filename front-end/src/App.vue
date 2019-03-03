@@ -1,8 +1,11 @@
 <template>
   <v-app class="grey lighten-4">
     <Navbar />
-    <v-content class="mx-4 mb-4" fluid>
-      <router-view></router-view>
+    <v-content
+      class="mx-4 mb-4"
+      fluid
+    >
+      <router-view />
     </v-content>
   </v-app>
 </template>
@@ -28,11 +31,6 @@ export default {
         return (this * Math.PI) / 180;
       };
     }
-
-    //Set the Authorization header for authentication with the backend
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
   }
 }
 </script>

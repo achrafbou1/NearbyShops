@@ -1,7 +1,7 @@
 # united-remote-web-coding-challenge
 A MEVN Stack application that lists nearby shops based on a user's location.
 
-#Features implemented
+# Features implemented
 As a User, I can sign up using my email & password
 
 As a User, I can sign in using my email & password
@@ -16,15 +16,20 @@ As a User, I can display the list of preferred shops
 
 As a User, I can remove a shop from my preferred shops list
 
-#Getting Started
-##Technologies used
-
+# Getting Started
+## Technologies used
+Git 2.20.1
 Vue CLI 3.0
 NPM 6.4.1
 MongoDB 4.0.5
 
 # Quick installation & setup
-First, open two terminal instances. In the first one, access the front-end folder using
+First, make sure you have git installedclone this repository using the following command:
+```
+git clone https://github.com/achrafbou1/united-remote-web-coding-challenge/
+```
+
+Next, inside the project folder, open two terminal instances. In the first one, access the front-end folder using
 ```
 cd .\front-end\
 ```
@@ -55,5 +60,16 @@ npm install
 ### Start the server
 ```
 npm start
+```
+
+# Setting up seed data 
+
+Start your MongoDB server then download the following file: https://github.com/hiddenfounders/web-coding-challenge/blob/master/dump-shops.zip
+
+Extract the .bson file somewhere.
+
+Open mongorestore from the MongoDB installation directory and type the following command to populate your database:
+```
+mongorestore -d united-remote-web-challenge 'bson file path'
 ```
 

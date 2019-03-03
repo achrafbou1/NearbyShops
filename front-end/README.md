@@ -16,7 +16,11 @@
       * Shops.vue
       * PreferredShops.vue
     * Landing.vue
-    
+  * App.vue
+  * Events.js
+  * main.js
+  * router.js
+  
 ## Project setup
 ```
 npm install

@@ -16,6 +16,22 @@ A MEVN Stack application that lists nearby shops based on a user's location.
 
 * As a User, I can remove a shop from my preferred shops list
 
+# Screenshots
+* Landing page:
+![alt text](http://prntscr.com/msmvw5)
+
+* Login
+![alt text](http://prntscr.com/msmw0y)
+
+* Register
+![alt text](http://prntscr.com/msmw7y)
+
+* Nearby Shops
+![alt text](http://prntscr.com/msmwge)
+
+* My Preferred Shops
+![alt text](http://prntscr.com/msmwng)
+
 # Getting Started
 ## Technologies used
 * Git 2.20.1

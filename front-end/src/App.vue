@@ -9,6 +9,7 @@
 
 <script>
 import Navbar from './components/layout/Navbar'
+import axios from "axios";
 
 export default {
   name: 'App',
@@ -19,6 +20,19 @@ export default {
     return {
       
     }
+  },
+  created() {
+    /** Converts numeric degrees to radians */
+    if (typeof Number.prototype.toRad === "undefined") {
+      Number.prototype.toRad = function() {
+        return (this * Math.PI) / 180;
+      };
+    }
+
+    //Set the Authorization header for authentication with the backend
+    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+      "jwtToken"
+    );
   }
 }
 </script>

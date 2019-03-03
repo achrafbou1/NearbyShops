@@ -60,8 +60,8 @@ router.post('/like', passport.authenticate('jwt', {
   User.findOneAndUpdate({
     _id: req.user._id,
   }, {
-    $push: {
-      likedShops: req.body.shop_id,
+    $addToSet: {
+      likedShops: req.body.shop_id
     },
   }, {
     new: true,

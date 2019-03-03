@@ -3,14 +3,14 @@
     <v-container grid-list-md>
       <flash-message></flash-message>
       <v-layout row wrap>
-        <v-flex xs4 v-if="!isLiked(shop._id) || !isDisliked(shop._id)" v-for="shop in shops" :key="shop._id">
+        <v-flex xs4 v-if="!isLiked(shop._id) && !isDisliked(shop._id)" v-for="shop in shops" :key="shop._id">
           <v-card>
             <v-img :src="shop.picture" height="200px"></v-img>
             <v-card-title primary-title>
               <div>
                 <div class="headline">{{shop.name}}</div>
                 <!-- Round to 2 decimal places -->
-                <div v-if="isSorted" class="grey--text">{{Math.round(shop.distance * 100) / 100}} Km</div>
+                <div class="grey--text">{{Math.round(shop.distance * 100) / 100}} Km</div>
                 <span class="grey--text">{{shop.city}}</span>
                 <span class="grey--text">{{shop.email}}</span>
               </div>
@@ -30,30 +30,21 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import { EventBus } from "@/Events";
 
 export default {
   name: "Shops",
   data() {
     return {
       shops: {},
-      isSorted: false,
       likedShops: [],
       dislikedShops: []
     };
   },
   created() {
-    /** Converts numeric degrees to radians */
-    if (typeof Number.prototype.toRad === "undefined") {
-      Number.prototype.toRad = function() {
-        return (this * Math.PI) / 180;
-      };
-    }
-    //Set the Authorization header for authentication with the backend
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
     this.getShops();
     this.getLikedShops();
+    this.getDislikedShops();
   },
   methods: {
     // Get all shops in the database and push them in a local array for further processing
@@ -75,10 +66,18 @@ export default {
         .then(response => {
           // Get the list of shops from backend server and fill the local array of objects that will be specific to hte user, then sort them by distance
           this.likedShops = response.data.likedShops;
+          EventBus.$emit("likedShops", this.likedShops);
         })
         .catch(error => {
           router.push({ name: "Login" });
         });
+    },
+    getDislikedShops() {
+      this.$cookies.keys().forEach(dislikedShop => {
+        let dislikedShop_id = this.$cookies.get(dislikedShop);
+        this.dislikedShops.push(dislikedShop_id);
+      });
+      console.log(this.dislikedShops);
     },
     // Checks if a shop is liked
     isLiked(shop_id) {
@@ -87,8 +86,8 @@ export default {
       }
       return true;
     },
-    isDisliked(shop_id){
-      if(this.dislikedShops.indexOf(shop_id) === -1){
+    isDisliked(shop_id) {
+      if (this.dislikedShops.indexOf(shop_id) === -1) {
         return false;
       }
       return true;
@@ -116,7 +115,11 @@ export default {
     // Dislike a shop
     dislike(shop_id) {
       this.flash().destroyAll();
-      this.$cookies.set("dislikedShop-"+this.getRandomInt(0,100000), shop_id, 60 * 60 * 2);
+      this.$cookies.set(
+        "dislikedShop-" + this.getRandomInt(0, 100000),
+        shop_id,
+        60 * 60 * 2
+      );
       this.dislikedShops.push(shop_id);
       this.flashSuccess("You won't see this shop for the next 2 hours!");
     },
@@ -144,7 +147,7 @@ export default {
       this.shops.sort((shop1, shop2) =>
         shop1.distance > shop2.distance ? 1 : -1
       );
-      this.isSorted = true;
+      EventBus.$emit("shops", this.shops);
     },
     //Function that calculates the distance between two points
     getDistance(userLongitude, userLatitude, shopLongitude, shopLatitude) {

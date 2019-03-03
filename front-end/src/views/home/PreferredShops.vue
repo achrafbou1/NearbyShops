@@ -30,54 +30,32 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+import {EventBus} from "@/Events";
 
 export default {
   name: "PreferredShops",
   data() {
     return {
       shops: {},
-      likedShops: [],
-      isSorted: false
+      likedShops: []
     };
   },
   created() {
-    /** Converts numeric degrees to radians */
-    if (typeof Number.prototype.toRad === "undefined") {
-      Number.prototype.toRad = function() {
-        return (this * Math.PI) / 180;
-      };
-    }
-    //Set the Authorization header for authentication with the backend
-    axios.defaults.headers.common["Authorization"] = localStorage.getItem(
-      "jwtToken"
-    );
     this.getShops();
     this.getLikedShops();
   },
   methods: {
     // Get all shops in the database and push them in a local array for further processing
     getShops() {
-      axios
-        .get("/api/v1/shops")
-        .then(response => {
-          // Get the list of shops from backend server and fill the local array of objects that will be specific to hte user, then sort them by distance
-          this.shops = response.data.shops;
-          this.getLocationAndSort();
-        })
-        .catch(error => {
-          router.push({ name: "Login" });
-        });
+      EventBus.$on('shops', (shops) => {
+         this.shops = shops;
+        console.log(this.shops)
+      });
     },
     getLikedShops() {
-      axios
-        .get("/api/v1/shops/likedshops")
-        .then(response => {
-          // Get the list of shops from backend server and fill the local array of objects that will be specific to hte user, then sort them by distance
-          this.likedShops = response.data.likedShops;
-        })
-        .catch(error => {
-          router.push({ name: "Login" });
-        });
+      EventBus.$on('likedShops', (likedShops) => {
+        this.likedShops = likedShops;
+      });
     },
     // Checks if a shop is liked
     isLiked(shop_id) {

@@ -15,8 +15,8 @@ const UserSchema = new Schema({
   },
   likedShops: [{
     type: Schema.Types.ObjectId,
-    ref: 'Shop'
-  }]
+    ref: 'Shop',
+  }],
 });
 
 UserSchema.pre('save', function (next) {

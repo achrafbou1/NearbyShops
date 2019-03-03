@@ -4,12 +4,12 @@
 
 | API       | GET                                | POST                     |      
 |-----------|------------------------------------|--------------------------|
-| Shop API  |                                    | /api/v1/login/           | 
-|           |                                    | /api/v1/register/        |
-|           | /api/v1/shops/                     |                          |
-|           | /api/v1/shops/likedshops           |                          |
-|           |                                    | /api/v1/shops/like       |
-|           |                                    | /api/v1/shops/remove     | 
+| Auth API  |                                    | /api/v1/login/           | 
+| Auth API  |                                    | /api/v1/register/        |
+| Shops API | /api/v1/shops/                     |                          |
+| Shops API | /api/v1/shops/likedshops           |                          |
+| Shops API |                                    | /api/v1/shops/like       |
+| Shops API |                                    | /api/v1/shops/remove     | 
 
 ## Project setup
 ```

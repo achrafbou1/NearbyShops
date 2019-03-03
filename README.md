@@ -61,6 +61,7 @@ npm install
 ```
 npm start
 ```
+## Now go to http://localhost:8080
 
 # Setting up seed data 
 

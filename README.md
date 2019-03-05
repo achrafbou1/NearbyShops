@@ -40,7 +40,7 @@ A MEVN Stack application that lists nearby shops based on a user's location.
 * MongoDB 4.0.5
 
 # Quick installation & setup
-First, make sure you have git installedclone this repository using the following command:
+First, make sure you have git and npm installed. Clone this repository using the following command:
 ```
 git clone https://github.com/achrafbou1/united-remote-web-coding-challenge/
 ```
@@ -62,7 +62,7 @@ npm install
 npm run serve
 ```
 
-Next, in the second terminal, cd into the back-end folder.
+Next, in the second terminal, access the back-end folder using this command:
 ```
 cd .\back-end\
 ```

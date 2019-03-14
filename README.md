@@ -1,4 +1,4 @@
-# united-remote-web-coding-challenge
+# NearbyShops
 A MEVN Stack application that lists nearby shops based on a user's location.
 
 # Features implemented

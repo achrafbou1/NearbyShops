@@ -42,7 +42,7 @@ A MEVN Stack application that lists nearby shops based on a user's location.
 # Quick installation & setup
 First, make sure you have git and npm installed. Clone this repository using the following command:
 ```
-git clone https://github.com/achrafbou1/united-remote-web-coding-challenge/
+git clone https://github.com/achrafbou1/NearbyShops/
 ```
 
 Next, inside the project folder, open two terminal instances. In the first one, access the front-end folder using
